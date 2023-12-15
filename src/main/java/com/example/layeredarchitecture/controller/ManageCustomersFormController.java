@@ -112,8 +112,6 @@ public class ManageCustomersFormController {
         btnSave.setText("Save");
         tblCustomers.getSelectionModel().clearSelection();
     }
-
-
     public void btnSave_OnAction(ActionEvent actionEvent) {
         String id = txtCustomerId.getText();
         String name = txtCustomerName.getText();
@@ -153,12 +151,10 @@ public class ManageCustomersFormController {
                 if (!existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
-                Connection connection = DBConnection.getDbConnection().getConnection();
-                PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
-                pstm.setString(1, name);
-                pstm.setString(2, address);
-                pstm.setString(3, id);
-                pstm.executeUpdate();
+                CustomerDTO dto = new CustomerDTO(id, name, address);
+                CustomerDAOImpl customerDAO= new CustomerDAOImpl();
+                boolean isUpdated=customerDAO.UpdateCustomer(dto);
+
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -173,8 +169,6 @@ public class ManageCustomersFormController {
 
         btnAddNewCustomer.fire();
     }
-
-
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT id FROM Customer WHERE id=?");
