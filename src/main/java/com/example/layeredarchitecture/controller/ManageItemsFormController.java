@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.dao.ItemDAO;
+import com.example.layeredarchitecture.dao.ItemDao;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
@@ -71,7 +72,7 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
             /*Get all items*/
-            ItemDAO itemDAO = new ItemDAO();
+            ItemDao itemDAO = new ItemDAO();
             ArrayList<ItemDTO> allitem = itemDAO.loadAll();
             for(ItemDTO dto: allitem){
                 tblItems.getItems().add(new ItemTM(dto.getCode(),dto.getDescription(),dto.getUnitPrice(),dto.getQtyOnHand()));
@@ -125,11 +126,11 @@ public class ManageItemsFormController {
         /*Delete Item*/
         String code = tblItems.getSelectionModel().getSelectedItem().getCode();
         try {
-            ItemDAO dao=  new ItemDAO();
+            ItemDao dao=  new ItemDAO();
             if (!dao.existItem(code)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
-            ItemDAO itemDAO = new ItemDAO();
+            ItemDao itemDAO = new ItemDAO();
             boolean isDeleted=itemDAO.deleteItem(code);
 
             if(isDeleted){
@@ -168,13 +169,13 @@ public class ManageItemsFormController {
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
-                ItemDAO dao=  new ItemDAO();
+                ItemDao dao=  new ItemDAO();
                 if (dao.existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
                 //Save Item
                 ItemDTO dto = new ItemDTO(code, description, unitPrice, qtyOnHand);
-                ItemDAO itemDAO = new ItemDAO();
+                ItemDao itemDAO = new ItemDAO();
                 boolean isSaved=itemDAO.SaveItem(dto);
                 if(isSaved){
                     tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
@@ -187,13 +188,13 @@ public class ManageItemsFormController {
         } else {
             try {
 
-                ItemDAO dao=  new ItemDAO();
+                ItemDao dao=  new ItemDAO();
                 if (!dao.existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
                 }
                 /*Update Item*/
                 ItemDTO dto = new ItemDTO(code,description,unitPrice,qtyOnHand);
-                ItemDAO itemDAO = new ItemDAO();
+                ItemDao itemDAO = new ItemDAO();
                 boolean isUpdated=itemDAO.UpdateItem(dto);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
@@ -215,7 +216,7 @@ public class ManageItemsFormController {
     private String generateNewId() {
         try {
 
-            ItemDAO itemDAO = new ItemDAO();
+            ItemDao itemDAO = new ItemDAO();
             return  itemDAO.nextId();
 
         } catch (SQLException e) {

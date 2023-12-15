@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 
 
-public class ItemDAO {
-
+public class ItemDAO implements ItemDao{
+    @Override
     public ArrayList<ItemDTO> loadAll() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
@@ -23,12 +23,14 @@ public class ItemDAO {
         }
         return getAllItems;
     }
+    @Override
     public boolean deleteItem(String code) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeUpdate()>0;
     }
+    @Override
     public boolean SaveItem(ItemDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)");
@@ -38,6 +40,7 @@ public class ItemDAO {
         pstm.setInt(4, dto.getQtyOnHand());
         return pstm.executeUpdate()>0;
     }
+    @Override
     public boolean UpdateItem(ItemDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
@@ -47,6 +50,7 @@ public class ItemDAO {
         pstm.setString(4, dto.getCode());
         return pstm.executeUpdate()>0;
     }
+    @Override
     public String nextId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
@@ -58,6 +62,7 @@ public class ItemDAO {
             return "I00-001";
         }
     }
+    @Override
     public boolean existItem(String code) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
