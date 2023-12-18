@@ -84,6 +84,7 @@ public class ItemDAO implements ItemDao{
         return loadAllitem;
     }
 
+    @Override
     public boolean UpdateItemQTY(ItemDTO item, Connection connection) throws SQLException {
         PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
         pstm.setString(1, item.getDescription());
@@ -100,5 +101,17 @@ public class ItemDAO implements ItemDao{
             connection.setAutoCommit(true);
             return true;
         }
+    }
+
+    @Override
+    public ItemDTO findItems(String code) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
+        pstm.setString(1, code);
+        ResultSet rst = pstm.executeQuery();
+        rst.next();
+        ItemDTO item = new ItemDTO(code , rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+
+        return item;
     }
 }
