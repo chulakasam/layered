@@ -2,13 +2,9 @@ package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
-import com.example.layeredarchitecture.view.tdm.CustomerTM;
-import javafx.scene.control.TableView;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO{
 
@@ -71,5 +67,19 @@ public class CustomerDAOImpl implements CustomerDAO{
         PreparedStatement pstm = connection.prepareStatement("SELECT id FROM Customer WHERE id=?");
         pstm.setString(1, id);
         return pstm.executeQuery().next();
+    }
+
+    @Override
+    public ArrayList<CustomerDTO> loadAllCustomerIds() throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
+
+        ArrayList<CustomerDTO> loadAllCus = new ArrayList<>();
+        while (rst.next()){
+            CustomerDTO customerDTO = new CustomerDTO(rst.getString("id"),rst.getString("name"),rst.getString("address") );
+            loadAllCus.add(customerDTO);
+        }
+        return loadAllCus;
     }
 }

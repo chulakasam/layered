@@ -37,6 +37,7 @@ public class ManageItemsFormController {
     public TableView<ItemTM> tblItems;
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
+    ItemDao itemDAO = new ItemDAO();
 
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -72,7 +73,7 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
             /*Get all items*/
-            ItemDao itemDAO = new ItemDAO();
+
             ArrayList<ItemDTO> allitem = itemDAO.loadAll();
             for(ItemDTO dto: allitem){
                 tblItems.getItems().add(new ItemTM(dto.getCode(),dto.getDescription(),dto.getUnitPrice(),dto.getQtyOnHand()));
@@ -126,11 +127,11 @@ public class ManageItemsFormController {
         /*Delete Item*/
         String code = tblItems.getSelectionModel().getSelectedItem().getCode();
         try {
-            ItemDao dao=  new ItemDAO();
-            if (!dao.existItem(code)) {
+
+            if (!itemDAO.existItem(code)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
-            ItemDao itemDAO = new ItemDAO();
+
             boolean isDeleted=itemDAO.deleteItem(code);
 
             if(isDeleted){
@@ -169,13 +170,13 @@ public class ManageItemsFormController {
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
-                ItemDao dao=  new ItemDAO();
-                if (dao.existItem(code)) {
+
+                if (itemDAO.existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
                 //Save Item
                 ItemDTO dto = new ItemDTO(code, description, unitPrice, qtyOnHand);
-                ItemDao itemDAO = new ItemDAO();
+
                 boolean isSaved=itemDAO.SaveItem(dto);
                 if(isSaved){
                     tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
@@ -194,7 +195,7 @@ public class ManageItemsFormController {
                 }
                 /*Update Item*/
                 ItemDTO dto = new ItemDTO(code,description,unitPrice,qtyOnHand);
-                ItemDao itemDAO = new ItemDAO();
+
                 boolean isUpdated=itemDAO.UpdateItem(dto);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
@@ -216,7 +217,7 @@ public class ManageItemsFormController {
     private String generateNewId() {
         try {
 
-            ItemDao itemDAO = new ItemDAO();
+
             return  itemDAO.nextId();
 
         } catch (SQLException e) {

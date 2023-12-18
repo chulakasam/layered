@@ -69,4 +69,18 @@ public class ItemDAO implements ItemDao{
         pstm.setString(1, code);
         return pstm.executeQuery().next();
     }
+
+    @Override
+    public ArrayList<ItemDTO> loadAllItemIds() throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        Statement stm = connection.createStatement();
+        ResultSet rst = stm.executeQuery("SELECT * FROM Item");
+
+        ArrayList<ItemDTO> loadAllitem = new ArrayList<>();
+        while (rst.next()){
+            ItemDTO itemDTO = new ItemDTO(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+            loadAllitem.add(itemDTO);
+        }
+        return loadAllitem;
+    }
 }
