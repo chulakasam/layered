@@ -334,11 +334,15 @@ public class PlaceOrderFormController {
             boolean isSaved=orderDAO.SaveOrder(orderId,orderDate,customerId,connection);
 
             if(!isSaved){
+                connection.rollback();
+                connection.setAutoCommit(true);
                 return false;
             }
 
             boolean isAdded=orderDetailDAOImpl.SaveOrderDetails(orderId,orderDetails,connection);
             if(!isAdded){
+                connection.rollback();
+                connection.setAutoCommit(true);
                 return false;
             }
 
@@ -350,6 +354,8 @@ public class PlaceOrderFormController {
                     ItemDAO itemDAO = new ItemDAO();
                    boolean isUpdated= itemDAO.UpdateItemQTY(item,connection);
                    if(!isUpdated) {
+                       connection.rollback();
+                       connection.setAutoCommit(true);
                        return false;
                    }
 

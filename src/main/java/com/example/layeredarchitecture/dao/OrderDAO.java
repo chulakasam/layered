@@ -22,8 +22,8 @@ public class OrderDAO implements OrderDao{
         stm.setString(3, customerId);
 
         if(stm.executeUpdate()!=1){
-            connection.rollback();
-            connection.setAutoCommit(true);
+           // connection.rollback();
+           // connection.setAutoCommit(true);
             return false;
         }else {
             return true;
