@@ -133,11 +133,11 @@ public class ManageCustomersFormController {
             /*Save Customer*/
             try {
 
-                if (customerDAO.existCustomer(id)) {
+                if (customerDAO.exist(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
-
-                boolean isSaved=customerDAO.SaveCustomer(id,name,address);
+                CustomerDTO dto=new CustomerDTO(id,name,address);
+                boolean isSaved=customerDAO.Save(dto);
                 if(isSaved) {
                     tblCustomers.getItems().add(new CustomerTM(id, name, address));
                 }
@@ -153,12 +153,12 @@ public class ManageCustomersFormController {
 
             try {
 
-                if (!customerDAO.existCustomer(id)) {
+                if (!customerDAO.exist(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
                 CustomerDTO dto = new CustomerDTO(id, name, address);
 
-                boolean isUpdated=customerDAO.UpdateCustomer(dto);
+                boolean isUpdated=customerDAO.Update(dto);
 
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
@@ -179,11 +179,11 @@ public class ManageCustomersFormController {
         String id = tblCustomers.getSelectionModel().getSelectedItem().getId();
         try {
 
-            if (!customerDAO.existCustomer(id)) {
+            if (!customerDAO.exist(id)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
 
-            boolean iSDeleted=customerDAO.deleteCustomer(id);
+            boolean iSDeleted=customerDAO.delete(id);
 
             if (iSDeleted){
                 tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());

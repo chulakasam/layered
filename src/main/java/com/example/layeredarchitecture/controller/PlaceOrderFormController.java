@@ -102,7 +102,7 @@ public class PlaceOrderFormController {
                     Connection connection = DBConnection.getDbConnection().getConnection();
                     try {
                         CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-                        if (!customerDAO.existCustomer(newValue + "")) {
+                        if (!customerDAO.exist(newValue + "")) {
 //                            "There is no such customer associated with the id " + id
                             new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + newValue + "").show();
                         }
@@ -139,7 +139,7 @@ public class PlaceOrderFormController {
                 try {
                     ItemDAO itemDAO = new ItemDAO();
 
-                    if (!itemDAO.existItem(newItemCode + "")) {
+                    if (!itemDAO.exist(newItemCode + "")) {
 //                        throw new NotFoundException("There is no such item associated with the id " + code);
                     }
                     Connection connection = DBConnection.getDbConnection().getConnection();
@@ -328,6 +328,9 @@ public class PlaceOrderFormController {
             boolean isExixst=orderDAO.existOrder(orderId,connection);
 
             if(isExixst) {
+                connection.setAutoCommit(false);
+            }else{
+                connection.setAutoCommit(false);
             }
 
 
@@ -360,7 +363,9 @@ public class PlaceOrderFormController {
                    }
 
                 }
-               return true;
+                connection.commit();
+                connection.setAutoCommit(true);
+                return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
