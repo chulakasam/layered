@@ -1,21 +1,50 @@
-package com.example.layeredarchitecture.dao;
+package com.example.layeredarchitecture.dao.custom.Impl;
 
-import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.dao.SQLUtil;
+import com.example.layeredarchitecture.dao.custom.OrderDao;
+import com.example.layeredarchitecture.model.OrderDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class OrderDAO implements OrderDao{
+public class OrderDAO implements OrderDao {
     @Override
-    public String generateNextID() throws SQLException, ClassNotFoundException {
+    public ArrayList<OrderDTO> getAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean Save(OrderDTO dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean Update(OrderDTO dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public String generateNextId() throws SQLException, ClassNotFoundException {
         /*Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
         */
 
-        ResultSet rst=SQLUtil.test("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1");
+        ResultSet rst= SQLUtil.test("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1");
         return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
     }
+
+    @Override
+    public boolean exist(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
     @Override
     public boolean SaveOrder(String orderId, LocalDate orderDate, String customerId, Connection connection) throws SQLException, ClassNotFoundException {
         /*PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");

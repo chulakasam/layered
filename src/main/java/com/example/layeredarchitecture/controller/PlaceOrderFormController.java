@@ -1,6 +1,13 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.*;
+import com.example.layeredarchitecture.dao.custom.CustomerDAO;
+import com.example.layeredarchitecture.dao.custom.Impl.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.custom.Impl.ItemDAO;
+import com.example.layeredarchitecture.dao.custom.Impl.OrderDAO;
+import com.example.layeredarchitecture.dao.custom.Impl.OrderDetailDAOImpl;
+import com.example.layeredarchitecture.dao.custom.ItemDao;
+import com.example.layeredarchitecture.dao.custom.OrderDao;
+import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -193,7 +200,7 @@ public class PlaceOrderFormController {
     public String generateNewOrderId() {
         try {
 
-            return  orderDAO.generateNextID();
+            return  orderDAO.generateNextId();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
         } catch (ClassNotFoundException e) {
