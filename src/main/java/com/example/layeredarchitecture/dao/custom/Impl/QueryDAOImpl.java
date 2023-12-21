@@ -27,7 +27,7 @@ public class QueryDAOImpl implements QueryDAO {
     @Override
     public ArrayList LoadToTable(String id) throws SQLException, ClassNotFoundException {
 
-        ResultSet rst=SQLUtil.test("SELECT od.oid, o.date, od.itemCode, i.description, od.qty, od.unitPrice from OrderDetails od join Item i on od.itemCode = i.code join Orders o on od.oid = o.oid where o.oid = ?",id);
+        ResultSet rst=SQLUtil.test("SELECT od.oid, o.date, od.itemCode, i.description, od.qty, od.unitPrice FROM OrderDetails od JOIN Item i on od.itemCode = i.code join Orders o on od.oid = o.oid WHERE o.oid = ?",id);
         ArrayList<TableDTO> getAlldetails = new ArrayList<>();
 
         while (rst.next()) {
