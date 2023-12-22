@@ -14,6 +14,6 @@ public interface OrderDao extends CrudDAO<OrderDTO> {
      boolean existOrder(String orderId, Connection connection) throws SQLException, ClassNotFoundException;
 
     */
-     boolean SaveOrder(String orderId, LocalDate orderDate, String customerId, Connection connection) throws SQLException, ClassNotFoundException;
-     boolean existOrder(String orderId, Connection connection) throws SQLException, ClassNotFoundException;
+     boolean SaveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException;
+     boolean existOrder(String orderId) throws SQLException, ClassNotFoundException;
 }

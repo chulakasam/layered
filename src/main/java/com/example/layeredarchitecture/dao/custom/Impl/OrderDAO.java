@@ -46,7 +46,12 @@ public class OrderDAO implements OrderDao {
     }
 
     @Override
-    public boolean SaveOrder(String orderId, LocalDate orderDate, String customerId, Connection connection) throws SQLException, ClassNotFoundException {
+    public OrderDTO search(String id) throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean SaveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException {
         /*PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
         stm.setString(1, orderId);
         stm.setDate(2, Date.valueOf(orderDate));
@@ -64,7 +69,7 @@ public class OrderDAO implements OrderDao {
         return SQLUtil.test("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",orderId,orderDate,customerId);
     }
     @Override
-    public boolean existOrder(String orderId, Connection connection) throws SQLException, ClassNotFoundException {
+    public boolean existOrder(String orderId) throws SQLException, ClassNotFoundException {
        /* PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
         stm.setString(1, orderId);
         if (stm.executeQuery().next()){

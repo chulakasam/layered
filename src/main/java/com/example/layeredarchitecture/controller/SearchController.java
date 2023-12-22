@@ -96,6 +96,7 @@ public class SearchController {
     public void orderIdOnAction(ActionEvent actionEvent) {
         String id = (String) cmbOrderId.getValue();
          try {
+             tblOrderDetail.getItems().clear();
              ArrayList<TableDTO> details = queryDAO.LoadToTable(id);
 
          for (TableDTO c : details) {
