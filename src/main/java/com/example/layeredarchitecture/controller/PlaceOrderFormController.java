@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.bo.BOFactory;
 import com.example.layeredarchitecture.bo.PlaceOrderBO;
 import com.example.layeredarchitecture.bo.PlaceOrderBOImpl;
 import com.example.layeredarchitecture.dao.custom.CustomerDAO;
@@ -59,7 +60,7 @@ public class PlaceOrderFormController {
     public Label lblDate;
     public Label lblTotal;
     private String orderId;
-
+    PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBOFactory().getBOFactory(BOFactory.BOTypes.PLACE_ORDER);
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
@@ -108,7 +109,7 @@ public class PlaceOrderFormController {
                     Connection connection = DBConnection.getDbConnection().getConnection();
                     try {
                         //CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-                        PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
+
                         if (!placeOrderBO.existCustomer(newValue + "")) {
 //                            "There is no such customer associated with the id " + id
                             new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + newValue + "").show();
@@ -145,7 +146,7 @@ public class PlaceOrderFormController {
                 /*Find Item*/
                 try {
                     //ItemDAO itemDAO = new ItemDAO();
-                       PlaceOrderBO placeOrderBO=new PlaceOrderBOImpl();
+
                     if (!placeOrderBO.existItem(newItemCode + "")) {
 //                        throw new NotFoundException("There is no such item associated with the id " + code);
                     }
@@ -199,7 +200,7 @@ public class PlaceOrderFormController {
     }
     public String generateNewOrderId() {
         try {
-             PlaceOrderBO placeOrderBO=new PlaceOrderBOImpl();
+
             return  placeOrderBO.generateNextId();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
@@ -210,7 +211,7 @@ public class PlaceOrderFormController {
     }
     private void loadAllCustomerIds() {
         try {
-            PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
+
             ArrayList<CustomerDTO> allCustomerIds = placeOrderBO.loadAllCustomerIds();
 
             for(CustomerDTO c:allCustomerIds){
@@ -225,7 +226,7 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try {
             /*Get all items*/
-            PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
+
             ArrayList<ItemDTO> allItemIds = placeOrderBO.loadAllItemIds();
 
             for(ItemDTO itemDTO:allItemIds){
@@ -320,7 +321,7 @@ public class PlaceOrderFormController {
     }
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
 
-        PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
+
         try{
             return placeOrderBO.PlaceOrder(orderId,orderDate,customerId,orderDetails);
         }catch (SQLException e){

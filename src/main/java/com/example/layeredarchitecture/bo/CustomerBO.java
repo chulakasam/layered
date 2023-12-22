@@ -1,11 +1,12 @@
 package com.example.layeredarchitecture.bo;
 
+import com.example.layeredarchitecture.dao.SuperDAO;
 import com.example.layeredarchitecture.model.CustomerDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface CustomerBO {
+public interface CustomerBO extends SuperDAO {
     ArrayList<CustomerDTO> getAll() throws SQLException, ClassNotFoundException ;
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException;
     boolean SaveCustomer(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException;

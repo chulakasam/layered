@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.bo.BOFactory;
 import com.example.layeredarchitecture.bo.ItemBO;
 import com.example.layeredarchitecture.bo.ItemBOImpl;
 import com.example.layeredarchitecture.dao.custom.Impl.ItemDAO;
@@ -39,6 +40,7 @@ public class ManageItemsFormController {
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
     //ItemDao itemDAO = new ItemDAO();
+    ItemBO itemBO = (ItemBO) BOFactory.getBOFactory().getBOFactory(BOFactory.BOTypes.ITEM);
 
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -74,7 +76,7 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
             /*Get all items*/
-            ItemBO itemBO = new ItemBOImpl();
+
             ArrayList<ItemDTO> allitem = itemBO.getAllItems();
             for(ItemDTO dto: allitem){
                 tblItems.getItems().add(new ItemTM(dto.getCode(),dto.getDescription(),dto.getUnitPrice(),dto.getQtyOnHand()));
@@ -171,7 +173,7 @@ public class ManageItemsFormController {
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
-                ItemBOImpl itemBO = new ItemBOImpl();
+
                 if (itemBO.existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
@@ -196,7 +198,7 @@ public class ManageItemsFormController {
                 }
                 /*Update Item*/
                 ItemDTO dto = new ItemDTO(code,description,unitPrice,qtyOnHand);
-               ItemBO itemBO= new ItemBOImpl();
+
                 boolean isUpdated=itemBO.UpdateItem(dto);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
@@ -218,7 +220,7 @@ public class ManageItemsFormController {
     private String generateNewId() {
         try {
 
-            ItemBOImpl itemBO = new ItemBOImpl();
+
             return  itemBO.generateNextId();
 
         } catch (SQLException e) {

@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.bo.BOFactory;
 import com.example.layeredarchitecture.bo.CustomerBO;
 import com.example.layeredarchitecture.bo.CustomerBOImpl;
 import com.example.layeredarchitecture.dao.custom.CustomerDAO;
@@ -40,6 +41,7 @@ public class ManageCustomersFormController {
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
    // CustomerDAO customerDAO = new CustomerDAOImpl();
+   CustomerBO customerBO = (CustomerBO) BOFactory.getBOFactory().getBOFactory(BOFactory.BOTypes.CUSTOMER);
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -71,7 +73,7 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         /*Get all customers*/
         try {
-            CustomerBO customerBO = new CustomerBOImpl();
+
             ArrayList<CustomerDTO> allCustomer = customerBO.getAll();
             for(CustomerDTO c:allCustomer){
                 tblCustomers.getItems().add(new CustomerTM(c.getId(),c.getName(),c.getAddress()));
@@ -133,7 +135,7 @@ public class ManageCustomersFormController {
         if (btnSave.getText().equalsIgnoreCase("save")) {
             /*Save Customer*/
             try {
-                CustomerBO customerBO = new CustomerBOImpl();
+
                 if (customerBO.existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
@@ -154,7 +156,7 @@ public class ManageCustomersFormController {
             /*Update customer*/
 
             try {
-                CustomerBO customerBO = new CustomerBOImpl();
+
                 if (!customerBO.existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
@@ -180,7 +182,7 @@ public class ManageCustomersFormController {
         /*Delete Customer*/
         String id = tblCustomers.getSelectionModel().getSelectedItem().getId();
         try {
-            CustomerBO customerBO = new CustomerBOImpl();
+
             if (!customerBO.existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
@@ -202,7 +204,7 @@ public class ManageCustomersFormController {
     private String generateNewId() {
         try {
 
-            CustomerBO customerBO = new CustomerBOImpl();
+
             return customerBO.generateNextId();
 
         } catch (SQLException e) {
